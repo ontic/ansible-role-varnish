@@ -15,7 +15,7 @@
     owner: 'root'
     group: 'root'
     mode: '0655'
-  when: '{{ varnish_service_template | default(None) != None and varnish_service_template | trim != "" }}'
+  when: '{{ varnish_service_template | default(None) != None and varnish_service_template != "" }}'
   notify:
     - 'reload systemd'
     - 'restart varnish'

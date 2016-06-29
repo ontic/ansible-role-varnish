@@ -58,7 +58,7 @@
 - name: 'Varnish | Define Varnish service template.'
   set_fact:
     varnish_service_template: '{{ varnish_default_service_template }}'
-  when: '{{ not varnish_service_template and varnish_default_service_template is defined }}'
+  when: '{{ varnish_service_template | default(None) == None and varnish_default_service_template is defined }}'
   tags:
     - 'varnish'
     - 'varnish-package'
