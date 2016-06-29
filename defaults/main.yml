@@ -13,7 +13,6 @@ varnish_packages:
 varnish_service_name:
 varnish_service_state: 'started'
 varnish_service_enabled: yes
-varnish_service_template:
 varnish_config_path: '/etc/varnish'
 varnish_use_default_vcl: yes
 varnish_default_vcl_template: 'default.vcl.j2'

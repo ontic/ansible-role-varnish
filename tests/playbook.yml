@@ -8,7 +8,5 @@
 ---
 
 - hosts: 'all'
-  vars:
-    varnish_service_template: ''
   roles:
     - { role: 'ontic.varnish' }

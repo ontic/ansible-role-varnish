@@ -7,19 +7,6 @@
 
 ---
 
-- name: 'Varnish | Configure service init file.'
-  become: yes
-  template:
-    src: '{{ varnish_service_template }}'
-    dest: '/etc/systemd/system/varnish.service'
-    owner: 'root'
-    group: 'root'
-    mode: '0655'
-  when: '{{ varnish_service_template | default(None) != None and varnish_service_template != "" }}'
-  notify:
-    - 'reload systemd'
-    - 'restart varnish'
-
 - name: 'Varnish | Configure system configuration file.'
   become: yes
   template:
