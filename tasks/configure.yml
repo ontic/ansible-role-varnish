@@ -26,6 +26,7 @@
     mode: '0755'
 
 - name: 'Varnish | Configure default VCL.'
+  become: yes
   template:
     src: '{{ varnish_default_vcl_template }}'
     dest: '{{ varnish_config_path }}/default.vcl'
@@ -36,6 +37,7 @@
   notify: 'restart varnish'
 
 - name: 'Varnish | Configure secret file.'
+  become: yes
   template:
     src: 'secret.j2'
     dest: '{{ varnish_config_path }}/secret'
