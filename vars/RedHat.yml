@@ -11,6 +11,6 @@ varnish_default_packages:
   - name: 'varnish'
 
 varnish_default_service_name: 'varnish'
-varnish_system_config_template: 'varnish.j2'
-varnish_system_config_path: '/etc/sysconfig/varnish'
+varnish_default_system_config_template: 'varnish.j2'
+varnish_default_system_config_path: '/etc/sysconfig/varnish'
 varnish_yum_enablerepo: 'varnish-{{ varnish_version }},epel'

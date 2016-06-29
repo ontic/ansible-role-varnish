@@ -68,6 +68,19 @@
     - 'configure'
     - 'service'
 
+- name: 'Varnish | Define Varnish system template.'
+  set_fact:
+    varnish_system_config_template: '{{ varnish_default_system_config_template }}'
+  when: '{{ not varnish_system_config_template }}'
+  tags:
+    - 'varnish'
+    - 'varnish-package'
+    - 'varnish-configure'
+    - 'varnish-service'
+    - 'package'
+    - 'configure'
+    - 'service'
+
 - include: 'package.yml'
   tags:
     - 'varnish'
