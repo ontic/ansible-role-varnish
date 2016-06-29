@@ -1,0 +1,26 @@
+# This source file is subject to the (Open Source Initiative) BSD license
+# that is bundled with this package in the LICENSE file. It is also available
+# through the world-wide-web at this URL: http://www.ontic.com.au/license.html
+# If you did not receive a copy of the license and are unable to obtain it through
+# the world-wide-web, please send an email to license@ontic.com.au immediately.
+# Copyright (c) 2010-2016 Ontic. (http://www.ontic.com.au). All rights reserved.
+
+---
+
+
+varnish_version: '4.1'
+varnish_packages:
+varnish_service_name:
+varnish_service_state: 'started'
+varnish_service_enabled: yes
+varnish_service_template:
+varnish_config_path: '/etc/varnish'
+varnish_use_default_vcl: yes
+varnish_default_vcl_template: 'default.vcl.j2'
+varnish_default_backend_host: '127.0.0.1'
+varnish_default_backend_port: '8080'
+varnish_listen_port: '80'
+varnish_secret: '14bac2e6-1e34-4770-8078-974373b76c90'
+varnish_admin_listen_host: '127.0.0.1'
+varnish_admin_listen_port: '6082'
+varnish_storage: 'file,/var/lib/varnish/varnish_storage.bin,256M'

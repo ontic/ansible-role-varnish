@@ -1,0 +1,59 @@
+# This source file is subject to the (Open Source Initiative) BSD license
+# that is bundled with this package in the LICENSE file. It is also available
+# through the world-wide-web at this URL: http://www.ontic.com.au/license.html
+# If you did not receive a copy of the license and are unable to obtain it through
+# the world-wide-web, please send an email to license@ontic.com.au immediately.
+# Copyright (c) 2010-2016 Ontic. (http://www.ontic.com.au). All rights reserved.
+
+---
+
+- name: 'Varnish | Configure service init file.'
+  become: yes
+  template:
+    src: '{{ varnish_service_template }}'
+    dest: '/etc/systemd/system/varnish.service'
+    owner: 'root'
+    group: 'root'
+    mode: '0655'
+  when: '{{ varnish_service_template | default(None) != None }}'
+  notify:
+    - 'reload systemd'
+    - 'restart varnish'
+
+- name: 'Varnish | Configure system configuration file.'
+  become: yes
+  template:
+    src: '{{ varnish_system_config_template }}'
+    dest: '{{ varnish_system_config_path }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: 'Varnish | Configure ownership of configuration directory.'
+  become: yes
+  file:
+    path: '{{ varnish_config_path }}'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
+- name: 'Varnish | Configure default VCL.'
+  template:
+    src: '{{ varnish_default_vcl_template }}'
+    dest: '{{ varnish_config_path }}/default.vcl'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  when: '{{ varnish_use_default_vcl }}'
+  notify: 'restart varnish'
+
+- name: 'Varnish | Configure secret file.'
+  template:
+    src: 'secret.j2'
+    dest: '{{ varnish_config_path }}/secret'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: 'restart varnish'
+
