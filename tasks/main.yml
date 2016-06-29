@@ -68,10 +68,23 @@
     - 'configure'
     - 'service'
 
-- name: 'Varnish | Define Varnish system template.'
+- name: 'Varnish | Define Varnish system configuration template.'
   set_fact:
     varnish_system_config_template: '{{ varnish_default_system_config_template }}'
   when: '{{ not varnish_system_config_template }}'
+  tags:
+    - 'varnish'
+    - 'varnish-package'
+    - 'varnish-configure'
+    - 'varnish-service'
+    - 'package'
+    - 'configure'
+    - 'service'
+
+- name: 'Varnish | Define Varnish system configuration path.'
+  set_fact:
+    varnish_system_config_path: '{{ varnish_default_system_config_path }}'
+  when: '{{ not varnish_system_config_path }}'
   tags:
     - 'varnish'
     - 'varnish-package'
