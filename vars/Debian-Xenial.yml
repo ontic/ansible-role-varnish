@@ -7,5 +7,6 @@
 
 ---
 
+varnish_default_service_template: 'varnish.service.j2'
 varnish_default_system_config_template: 'varnish.params.j2'
 varnish_default_system_config_path: '/etc/varnish/varnish.params'

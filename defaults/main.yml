@@ -13,6 +13,7 @@ varnish_packages:
 varnish_service_name:
 varnish_service_state: 'started'
 varnish_service_enabled: yes
+varnish_service_template:
 varnish_system_config_template:
 varnish_system_config_path:
 varnish_config_path: '/etc/varnish'
