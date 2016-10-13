@@ -51,11 +51,6 @@
 
 - name: 'Varnish | Configure secret file.'
   become: yes
-  template:
-    src: 'secret.j2'
-    dest: '{{ varnish_config_path }}/secret'
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
+  command: dd if=/dev/random of='{{ varnish_config_path }}/secret' count=1
   notify: 'restart varnish'
 
