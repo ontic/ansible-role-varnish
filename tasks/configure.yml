@@ -38,6 +38,15 @@
     group: 'root'
     mode: '0755'
 
+- name: 'Varnish | Configure ownership of pid directory.'
+  become: yes
+  file:
+    path: '/var/run/varnish'
+    state: 'directory'
+    owner: 'varnish'
+    group: 'varnish'
+    mode: '0755'
+
 - name: 'Varnish | Configure default VCL.'
   become: yes
   template:
@@ -53,4 +62,3 @@
   become: yes
   command: dd if=/dev/random of='{{ varnish_config_path }}/secret' count=1
   notify: 'restart varnish'
-
