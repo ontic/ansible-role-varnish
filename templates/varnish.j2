@@ -90,6 +90,9 @@ VARNISH_STORAGE="{{ varnish_storage }}"
 # # Default TTL used when the backend does not specify one
 VARNISH_TTL=120
 #
+# # Varnish PID file path
+VARNISH_PID_FILE="{{ varnish_pid_file }}"
+#
 # # DAEMON_OPTS is used by the init script.  If you add or remove options, make
 # # sure you update this section, too.
 DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
@@ -101,8 +104,8 @@ DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -p thread_pool_timeout=${VARNISH_THREAD_TIMEOUT} \
 #             -u varnish -g varnish \
              -S ${VARNISH_SECRET_FILE} \
-             -s ${VARNISH_STORAGE}"
-#
+             -s ${VARNISH_STORAGE}" \
+             -P ${VARNISH_PID_FILE}
 
 
 ## Alternative 4, Do It Yourself. See varnishd(1) for more information.

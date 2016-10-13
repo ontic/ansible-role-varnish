@@ -16,6 +16,9 @@ vcl 4.0;
 backend default {
     .host = "{{ varnish_default_backend_host }}";
     .port = "{{ varnish_default_backend_port }}";
+    .connect_timeout = 1s; # Wait a maximum of 1s for backend connection (Apache, Nginx, etc...)
+    .first_byte_timeout = 300s; # Wait a maximum of 300s for the first byte to come from your backend
+    .between_bytes_timeout = 2s; # Wait a maximum of 2s between each bytes sent
 }
 
 sub vcl_recv {
@@ -23,6 +26,31 @@ sub vcl_recv {
     #
     # Typically you clean up the request here, removing cookies you don't need,
     # rewriting the request, etc.
+
+################ IP forwarding ##########################
+if (req.restarts == 0) {
+
+        if (req.http.X-Forwarded-For) {
+
+        set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+
+        } else {
+
+        set req.http.X-Forwarded-For = client.ip;
+
+        }
+
+}
+################# IP forwarding ##########################
+
+############### Only Static Content Cached ###############
+if (req.url ~ "(?i)\.(jpeg|jpg|png|gif|ico|webp|js|css|txt|pdf|gz|zip|lzma|bz2|tgz|tbz|html|htm)$") {
+      unset req.http.Cookie;
+      return (hash);
+  } else {
+      return (pass);
+  }
+############### Only Static Content Cached ###############
 }
 
 sub vcl_backend_response {
@@ -30,6 +58,9 @@ sub vcl_backend_response {
     #
     # Here you clean the response headers, removing silly Set-Cookie headers
     # and other mistakes your backend does.
+if (bereq.url ~ "(?i)\.(jpeg|jpg|png|gif|ico|webp|js|css|txt|pdf|gz|zip|lzma|bz2|tgz|tbz|html|htm)$") {
+      unset beresp.http.set-cookie;
+  }
 }
 
 sub vcl_deliver {
