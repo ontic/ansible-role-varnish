@@ -104,8 +104,8 @@ DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -p thread_pool_timeout=${VARNISH_THREAD_TIMEOUT} \
 #             -u varnish -g varnish \
              -S ${VARNISH_SECRET_FILE} \
-             -s ${VARNISH_STORAGE}" \
-             -P ${VARNISH_PID_FILE}
+             -s ${VARNISH_STORAGE} \
+             -P ${VARNISH_PID_FILE}"
 
 
 ## Alternative 4, Do It Yourself. See varnishd(1) for more information.
