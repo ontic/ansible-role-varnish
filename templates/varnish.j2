@@ -65,11 +65,11 @@ VARNISH_VCL_CONF={{ varnish_config_path }}/default.vcl
 # # Default address and port to bind to
 # # Blank address means all IPv4 and IPv6 interfaces, otherwise specify
 # # a host name, an IPv4 dotted quad, or an IPv6 address in brackets.
-# VARNISH_LISTEN_ADDRESS=
+VARNISH_LISTEN_ADDRESS={{ varnish_listen_address }}
 VARNISH_LISTEN_PORT={{ varnish_listen_port }}
 #
 # # Telnet admin interface listen address and port
-VARNISH_ADMIN_LISTEN_ADDRESS={{ varnish_admin_listen_host }}
+VARNISH_ADMIN_LISTEN_ADDRESS={{ varnish_admin_listen_address }}
 VARNISH_ADMIN_LISTEN_PORT={{ varnish_admin_listen_port }}
 #
 # # File containing the process identification number.
@@ -79,33 +79,37 @@ VARNISH_PID_FILE={{ varnish_pid_file }}
 VARNISH_SECRET_FILE={{ varnish_config_path }}/secret
 #
 # # The minimum number of worker threads to start
-VARNISH_MIN_THREADS=50
+VARNISH_MIN_THREADS={{ varnish_min_threads }}
 #
 # # The Maximum number of worker threads to start
-VARNISH_MAX_THREADS=1000
+VARNISH_MAX_THREADS={{ varnish_max_threads }}
 #
 # # Idle timeout for worker threads
-VARNISH_THREAD_TIMEOUT=120
+VARNISH_THREAD_TIMEOUT={{ varnish_thread_timeout }}
 #
 # # Backend storage specification
 VARNISH_STORAGE="{{ varnish_storage }}"
 #
 # # Default TTL used when the backend does not specify one
-VARNISH_TTL=120
+VARNISH_TTL={{ varnish_ttl }}
 #
 # # DAEMON_OPTS is used by the init script.  If you add or remove options, make
 # # sure you update this section, too.
 DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -f ${VARNISH_VCL_CONF} \
+             {% if varnish_pid_file %}-P ${VARNISH_PID_FILE} \{% endif %}
+             {% if varnish_version | version_compare('4.1', '<') %}-u varnish -g varnish \{% endif %}
+             -S ${VARNISH_SECRET_FILE} \
+             -s ${VARNISH_STORAGE}
              -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
              -t ${VARNISH_TTL} \
-             {% if varnish_pid_file %}-P ${VARNISH_PID_FILE} \{% endif %}
              -p thread_pool_min=${VARNISH_MIN_THREADS} \
              -p thread_pool_max=${VARNISH_MAX_THREADS} \
              -p thread_pool_timeout=${VARNISH_THREAD_TIMEOUT} \
-             {% if varnish_version | version_compare('4.1', '<') %}-u varnish -g varnish \{% endif %}
-             -S ${VARNISH_SECRET_FILE} \
-             -s ${VARNISH_STORAGE}"
+             -p cli_buffer=16k \
+             -p vcc_allow_inline_c=on \
+             -p workspace_backend=64k \
+             -p feature=+esi_ignore_other_elements"
 #
 
 

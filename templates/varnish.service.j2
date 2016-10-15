@@ -4,17 +4,21 @@ Documentation=https://www.varnish-cache.org/docs/4.1/ man:varnishd
 
 [Service]
 Type=forking
+{% if varnish_pid_file %}
+PIDFile={{ varnish_pid_file }}
+{% endif %}
 LimitNOFILE=131072
 LimitMEMLOCK=82000
 EnvironmentFile=/etc/varnish/varnish.params
 ExecStart=/usr/sbin/varnishd \
-	-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
-	-T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
-	{% if varnish_pid_file %}-P ${VARNISH_PID_FILE} \{% endif %}
-	-t $VARNISH_TTL \
-	-S $VARNISH_SECRET_FILE \
-	-s $VARNISH_STORAGE \
-	-f $VARNISH_VCL_CONF \
+    -a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
+    -f ${VARNISH_VCL_CONF} \
+    {% if varnish_pid_file %}-P ${VARNISH_PID_FILE} \{% endif %}
+    {% if varnish_version | version_compare('4.1', '<') %}-u varnish -g varnish \{% endif %}
+    -S ${VARNISH_SECRET_FILE} \
+    -s ${VARNISH_STORAGE}
+    -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
+    -t ${VARNISH_TTL} \
 	$DAEMON_OPTS
 
 ExecReload=/usr/share/varnish/reload-vcl
