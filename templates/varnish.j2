@@ -84,12 +84,25 @@ VARNISH_STORAGE="{{ varnish_storage }}"
 # # Default TTL used when the backend does not specify one
 VARNISH_TTL={{ varnish_ttl }}
 #
+# # The name of an unprivileged user to which the child process
+# # should switch before it starts accepting connections.
+VARNISH_USER=varnish
+#
+# # The name of an unprivileged group to which the child process
+# # should switch before it starts accepting connections.
+VARNISH_GROUP=varnish
+#
 # # DAEMON_OPTS is used by the init script.  If you add or remove options, make
 # # sure you update this section, too.
 DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -f ${VARNISH_VCL_CONF} \
-             {% if varnish_pid_file %}-P ${VARNISH_PID_FILE} \{% endif %}
-             {% if varnish_version | version_compare('4.1', '<') %}-u varnish -g varnish \{% endif %}
+{% if varnish_pid_file %}
+             -P ${VARNISH_PID_FILE} \
+{% endif %}
+{% if varnish_version | version_compare('4.1', '<') %}
+             -u ${VARNISH_USER} \
+             -g ${VARNISH_GROUP} \
+{% endif %}
              -S ${VARNISH_SECRET_FILE} \
              -s ${VARNISH_STORAGE} \
              -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
