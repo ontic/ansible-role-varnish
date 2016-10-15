@@ -78,15 +78,6 @@ VARNISH_PID_FILE={{ varnish_pid_file }}
 # # Shared secret file for admin interface
 VARNISH_SECRET_FILE={{ varnish_config_path }}/secret
 #
-# # The minimum number of worker threads to start
-VARNISH_MIN_THREADS={{ varnish_min_threads }}
-#
-# # The Maximum number of worker threads to start
-VARNISH_MAX_THREADS={{ varnish_max_threads }}
-#
-# # Idle timeout for worker threads
-VARNISH_THREAD_TIMEOUT={{ varnish_thread_timeout }}
-#
 # # Backend storage specification
 VARNISH_STORAGE="{{ varnish_storage }}"
 #
@@ -103,13 +94,7 @@ DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -s ${VARNISH_STORAGE} \
              -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
              -t ${VARNISH_TTL} \
-             -p thread_pool_min=${VARNISH_MIN_THREADS} \
-             -p thread_pool_max=${VARNISH_MAX_THREADS} \
-             -p thread_pool_timeout=${VARNISH_THREAD_TIMEOUT} \
-             -p cli_buffer=16k \
-             -p vcc_allow_inline_c=on \
-             -p workspace_backend=64k \
-             -p feature=+esi_ignore_other_elements"
+             {% for option in varnish_daemon_options %}-p {{ option }}{% if not loop.last %} {% endif %}{% endfor %}"
 #
 
 

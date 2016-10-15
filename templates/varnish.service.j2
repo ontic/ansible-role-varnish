@@ -10,6 +10,7 @@ PIDFile={{ varnish_pid_file }}
 LimitNOFILE=131072
 LimitMEMLOCK=82000
 EnvironmentFile=/etc/varnish/varnish.params
+ExecStartPre=/usr/sbin/varnishd -C -f $VARNISH_VCL_CONF
 ExecStart=/usr/sbin/varnishd \
     -a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
     -f ${VARNISH_VCL_CONF} \
