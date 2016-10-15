@@ -72,6 +72,9 @@ VARNISH_LISTEN_PORT={{ varnish_listen_port }}
 VARNISH_ADMIN_LISTEN_ADDRESS={{ varnish_admin_listen_host }}
 VARNISH_ADMIN_LISTEN_PORT={{ varnish_admin_listen_port }}
 #
+# # File containing the process identification number.
+VARNISH_PID_FILE={{ varnish_pid_file }}
+#
 # # Shared secret file for admin interface
 VARNISH_SECRET_FILE={{ varnish_config_path }}/secret
 #
@@ -96,10 +99,11 @@ DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -f ${VARNISH_VCL_CONF} \
              -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
              -t ${VARNISH_TTL} \
+             {% if varnish_pid_file %}-P ${VARNISH_PID_FILE} \{% endif %}
              -p thread_pool_min=${VARNISH_MIN_THREADS} \
              -p thread_pool_max=${VARNISH_MAX_THREADS} \
              -p thread_pool_timeout=${VARNISH_THREAD_TIMEOUT} \
-             -u varnish -g varnish \
+             {% if varnish_version | version_compare('4.1', '<') %}-u varnish -g varnish \{% endif %}
              -S ${VARNISH_SECRET_FILE} \
              -s ${VARNISH_STORAGE}"
 #
