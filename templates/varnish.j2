@@ -100,7 +100,7 @@ DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              {% if varnish_pid_file %}-P ${VARNISH_PID_FILE} \{% endif %}
              {% if varnish_version | version_compare('4.1', '<') %}-u varnish -g varnish \{% endif %}
              -S ${VARNISH_SECRET_FILE} \
-             -s ${VARNISH_STORAGE}
+             -s ${VARNISH_STORAGE} \
              -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
              -t ${VARNISH_TTL} \
              -p thread_pool_min=${VARNISH_MIN_THREADS} \
