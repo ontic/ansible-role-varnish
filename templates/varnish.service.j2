@@ -14,7 +14,7 @@ ExecStartPre=/usr/sbin/varnishd -C -f $VARNISH_VCL_CONF
 ExecStart=/usr/sbin/varnishd \
     -a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
     -f ${VARNISH_VCL_CONF} \
-    {% if varnish_pid_file %}-P ${VARNISH_PID_FILE} \{% endif %}
+    {% if varnish_pid_file %}-P {{ varnish_pid_file }} \{% endif %}
     {% if varnish_version | version_compare('4.1', '<') %}-u varnish -g varnish \{% endif %}
     -S ${VARNISH_SECRET_FILE} \
     -s ${VARNISH_STORAGE} \
