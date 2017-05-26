@@ -1,9 +1,5 @@
-# This source file is subject to the (Open Source Initiative) BSD license
-# that is bundled with this package in the LICENSE file. It is also available
-# through the world-wide-web at this URL: http://www.ontic.com.au/license.html
-# If you did not receive a copy of the license and are unable to obtain it through
-# the world-wide-web, please send an email to license@ontic.com.au immediately.
-# Copyright (c) 2010-2016 Ontic. (http://www.ontic.com.au). All rights reserved.
+# Copyright (c) Ontic. (http://www.ontic.com.au). All rights reserved.
+# See the COPYING file bundled with this package for license details.
 
 ---
 
@@ -12,21 +8,21 @@
   yum:
     name: 'gcc'
     state: 'present'
-  when: '{{ ansible_os_family == "RedHat" }}'
+  when: 'ansible_os_family == "RedHat"'
 
 - name: 'Varnish | Debian | Update repository key.'
   become: yes
   apt_key:
     url: 'http://repo.varnish-cache.org/debian/GPG-key.txt'
     state: 'present'
-  when: '{{ ansible_os_family == "Debian" and ansible_distribution_release != "xenial" }}'
+  when: 'ansible_os_family == "Debian" and ansible_distribution_release != "xenial"'
 
 - name: 'Varnish | Debian | Update repository list.'
   become: yes
   apt_repository:
     repo: 'deb http://repo.varnish-cache.org/ubuntu {{ ansible_distribution_release }} varnish-{{ varnish_version }}'
     state: 'present'
-  when: '{{ ansible_os_family == "Debian" and ansible_distribution_release != "xenial" }}'
+  when: 'ansible_os_family == "Debian" and ansible_distribution_release != "xenial"'
 
 - name: 'Varnish | RedHat | Update repository.'
   become: yes
@@ -34,7 +30,7 @@
   command: 'rpm --nosignature -i https://repo.varnish-cache.org/redhat/varnish-{{ varnish_version }}.el6.rpm'
   args:
     creates: '/var/lib/yum/repos/x86_64/6/varnish-{{ varnish_version }}'
-  when: '{{ ansible_os_family == "RedHat" and ansible_distribution_major_version|int < 7 }}'
+  when: 'ansible_os_family == "RedHat" and ansible_distribution_major_version|int < 7'
 
 - name: 'Varnish | Debian | Install Varnish packages.'
   become: yes
@@ -51,7 +47,7 @@
     update_cache: '{{ item.update_cache | default(omit) }}'
     upgrade: '{{ item.upgrade | default(omit) }}'
   with_items: '{{ varnish_packages }}'
-  when: '{{ ansible_os_family == "Debian" }}'
+  when: 'ansible_os_family == "Debian"'
 
 - name: 'Varnish | RedHat | Install Varnish packages.'
   become: yes
@@ -66,4 +62,4 @@
     state: '{{ item.state | default(omit) }}'
     update_cache: '{{ item.update_cache | default(omit) }}'
   with_items: '{{ varnish_packages }}'
-  when: '{{ ansible_os_family == "RedHat" }}'
+  when: 'ansible_os_family == "RedHat"'

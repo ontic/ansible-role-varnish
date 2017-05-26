@@ -1,9 +1,5 @@
-# This source file is subject to the (Open Source Initiative) BSD license
-# that is bundled with this package in the LICENSE file. It is also available
-# through the world-wide-web at this URL: http://www.ontic.com.au/license.html
-# If you did not receive a copy of the license and are unable to obtain it through
-# the world-wide-web, please send an email to license@ontic.com.au immediately.
-# Copyright (c) 2010-2016 Ontic. (http://www.ontic.com.au). All rights reserved.
+# Copyright (c) Ontic. (http://www.ontic.com.au). All rights reserved.
+# See the COPYING file bundled with this package for license details.
 
 ---
 
@@ -20,7 +16,7 @@
 
 - name: 'Varnish | Debian | Include distribution-specific variables.'
   include_vars: 'Debian-Xenial.yml'
-  when: '{{ ansible_os_family == "Debian" and ansible_distribution_release == "xenial" }}'
+  when: 'ansible_os_family == "Debian" and ansible_distribution_release == "xenial"'
   tags:
     - 'varnish'
     - 'varnish-package'
@@ -32,7 +28,7 @@
 
 - name: 'Varnish | RedHat | Include distribution-specific variables.'
   include_vars: 'RedHat-7.yml'
-  when: '{{ ansible_os_family == "RedHat" and ansible_distribution_major_version == "7" }}'
+  when: 'ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"'
   tags:
     - 'varnish'
     - 'varnish-package'
@@ -45,7 +41,7 @@
 - name: 'Varnish | Define Varnish service name.'
   set_fact:
     varnish_service_name: '{{ varnish_default_service_name }}'
-  when: '{{ not varnish_service_name }}'
+  when: 'not varnish_service_name'
   tags:
     - 'varnish'
     - 'varnish-package'
@@ -58,7 +54,7 @@
 - name: 'Varnish | Define Varnish service template.'
   set_fact:
     varnish_service_template: '{{ varnish_default_service_template }}'
-  when: '{{ not varnish_service_template and varnish_default_service_template is defined }}'
+  when: 'not varnish_service_template and varnish_default_service_template is defined'
   tags:
     - 'varnish'
     - 'varnish-package'
@@ -71,7 +67,7 @@
 - name: 'Varnish | Define Varnish packages.'
   set_fact:
     varnish_packages: '{{ varnish_default_packages }}'
-  when: '{{ not varnish_packages }}'
+  when: 'not varnish_packages'
   tags:
     - 'varnish'
     - 'varnish-package'
@@ -84,7 +80,7 @@
 - name: 'Varnish | Define Varnish system configuration template.'
   set_fact:
     varnish_system_config_template: '{{ varnish_default_system_config_template }}'
-  when: '{{ not varnish_system_config_template }}'
+  when: 'not varnish_system_config_template'
   tags:
     - 'varnish'
     - 'varnish-package'
@@ -97,7 +93,7 @@
 - name: 'Varnish | Define Varnish system configuration path.'
   set_fact:
     varnish_system_config_path: '{{ varnish_default_system_config_path }}'
-  when: '{{ not varnish_system_config_path }}'
+  when: 'not varnish_system_config_path'
   tags:
     - 'varnish'
     - 'varnish-package'
