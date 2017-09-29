@@ -6,7 +6,7 @@
 - name: 'Varnish | Debian | Install dependencies.'
   apt:
     name: '{{ item }}'
-    state: 'installed'
+    state: 'present'
   with_items:
     - 'apt-transport-https'
   when: 'ansible_os_family == "Debian"'
