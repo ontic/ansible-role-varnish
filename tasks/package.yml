@@ -3,6 +3,14 @@
 
 ---
 
+- name: 'Varnish | Debian | Install dependencies.'
+  apt:
+    name: '{{ item }}'
+    state: 'installed'
+  with_items:
+    - 'apt-transport-https'
+  when: 'ansible_os_family == "Debian"'
+
 - name: 'Varnish | RedHat | Install dependencies.'
   become: yes
   yum:
