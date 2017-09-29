@@ -3,7 +3,6 @@
 
 ---
 
-
 varnish_version: '5.2'
 varnish_packages:
 varnish_service_name:
