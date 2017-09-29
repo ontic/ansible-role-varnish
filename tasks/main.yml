@@ -14,29 +14,9 @@
     - 'configure'
     - 'service'
 
-- name: 'Varnish | Debian | Include distribution-specific variables.'
-  include_vars: 'Debian-Xenial.yml'
-  when: 'ansible_os_family == "Debian" and ansible_distribution_release == "xenial"'
-  tags:
-    - 'varnish'
-    - 'varnish-package'
-    - 'varnish-configure'
-    - 'varnish-service'
-    - 'package'
-    - 'configure'
-    - 'service'
-
-- name: 'Varnish | RedHat | Include distribution-specific variables.'
-  include_vars: 'RedHat-7.yml'
-  when: 'ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"'
-  tags:
-    - 'varnish'
-    - 'varnish-package'
-    - 'varnish-configure'
-    - 'varnish-service'
-    - 'package'
-    - 'configure'
-    - 'service'
+- name: 'Varnish | Define the Package Cloud repository name.'
+  set_fact:
+    varnish_packagecloud_repo: 'varnish{{ varnish_version|replace(".", "") }}'
 
 - name: 'Varnish | Define Varnish service name.'
   set_fact:
