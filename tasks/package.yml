@@ -26,14 +26,14 @@
   apt_key:
     url: 'https://packagecloud.io/varnishcache/{{ varnish_packagecloud_repo }}/gpgkey'
     state: 'present'
-  when: 'ansible_os_family == "Debian"'
+  when: 'ansible_os_family == "Debian" and ansible_distribution_major_version | int < 18'
 
 - name: 'Varnish | Debian | Update repository list.'
   become: yes
   apt_repository:
     repo: "deb https://packagecloud.io/varnishcache/{{ varnish_packagecloud_repo }}/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} main"
     state: 'present'
-  when: 'ansible_os_family == "Debian"'
+  when: 'ansible_os_family == "Debian" and ansible_distribution_major_version | int < 18'
 
 - name: 'Varnish | RedHat | Update repository.'
   become: yes
